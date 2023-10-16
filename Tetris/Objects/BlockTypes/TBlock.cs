@@ -1,9 +1,9 @@
 ﻿namespace Tetris.Objects.BlockTypes
 {
-	public class ZBlock: Stone
-	{
-
-        public ZBlock(int x, int y) : base(x, y) { }
+    public class ZBlock : Stone
+    {
+        public ZBlock(int x, int y)
+            : base(x, y) { }
 
         protected override ConsoleColor GetStoneColor()
         {
@@ -12,10 +12,12 @@
 
         protected override byte[,] GetLayout(Direction direction)
         {
-            switch(direction)
+            switch (direction)
             {
-                case Direction.Top or Direction.Bottom:
-                    return new byte[,] {
+                case Direction.Top
+                or Direction.Bottom:
+                    return new byte[,]
+                    {
                         { 0, 1 },
                         { 1, 1 },
                         { 1, 0 }
@@ -23,13 +25,12 @@
 
                 // Left or right
                 default:
-                    return new byte[,] {
+                    return new byte[,]
+                    {
                         { 1, 1, 0 },
                         { 0, 1, 1 },
                     };
             }
-           
         }
-	}
+    }
 }
-

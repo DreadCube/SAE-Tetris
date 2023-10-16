@@ -3,75 +3,71 @@ using Tetris.Objects.BlockTypes;
 
 namespace Tetris
 {
-	public static class World
-	{
-		private static (int, int) dimensions = (30, 30);
+    public static class World
+    {
+        private static (int, int) dimensions = (30, 30);
 
-		private static int points = 0;
+        private static int points = 0;
 
-		public static (int, int) GetDimensions()
-		{
-			return dimensions;
-		}
+        public static (int, int) GetDimensions()
+        {
+            return dimensions;
+        }
 
-		public static void Render(int cursorX, int cursorLength)
-		{
-			(int x, int y) = dimensions;
+        public static void Render(int cursorX, int cursorLength)
+        {
+            (int x, int y) = dimensions;
 
-			for (int i = 0; i  < y; i++)
-			{
-				for (int j = 0; j < x; j++)
-				{
-					if (i == 0 || i + 1 == y || j == 0 || j + 1 == x)
-					{
+            for (int i = 0; i < y; i++)
+            {
+                for (int j = 0; j < x; j++)
+                {
+                    if (i == 0 || i + 1 == y || j == 0 || j + 1 == x)
+                    {
+                        if (cursorX <= j && j < cursorX + cursorLength)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                        }
+                        Console.Write("█");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        if (j > cursorX - 1 && j < cursorX + cursorLength)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkGray;
+                        }
+                        Console.Write(" ");
+                        Console.ResetColor();
+                    }
+                }
+                Console.WriteLine();
+            }
 
-						if (cursorX <= j && j < cursorX + cursorLength)
-						{
-							Console.ForegroundColor = ConsoleColor.DarkGray;
-						} 
-						Console.Write("█");
-						Console.ResetColor();
-					}
-					else
-					{
-						if (j > cursorX - 1 && j < cursorX + cursorLength)
-						{
-							Console.BackgroundColor = ConsoleColor.DarkGray;
-						}
-						Console.Write(" ");
-						Console.ResetColor();
-					}
-				}
-				Console.WriteLine();
-			}
+            Program.WriteLineAtPosition("POINTS: " + points, x + 5, 0);
+        }
 
+        public static void IncreasePoints(int Points)
+        {
+            points += Points;
+        }
 
-			Program.WriteLineAtPosition("POINTS: " + points, x + 5, 0);
-		}
+        public static void GameOver()
+        {
+            (int x, int y) = dimensions;
 
-		public static void IncreasePoints(int Points)
-		{
-			points += Points;
-		}
+            Program.WriteLineAtPosition("GAME OVER!", x + 5, 2);
 
-		public static void GameOver()
-		{
-			(int x, int y) = dimensions;
+            Console.ReadKey();
+        }
 
-			Program.WriteLineAtPosition("GAME OVER!", x + 5, 2);
-
-			Console.ReadKey();
-		}
-
-
-
-		public static Stone SpawnStone()
-		{
+        public static Stone SpawnStone()
+        {
             Random rd = new Random();
 
             int stoneRand = rd.Next(0, 7);
 
-			(int x, int y) = dimensions;
+            (int x, int y) = dimensions;
 
             switch (stoneRand)
             {
@@ -91,8 +87,5 @@ namespace Tetris
 
             return new ZBlock(x / 2, 1);
         }
-	}
+    }
 }
-
-
-

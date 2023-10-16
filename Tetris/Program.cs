@@ -14,13 +14,14 @@ namespace Tetris
 
             Stone fallingStone = World.SpawnStone();
 
-
-
             while (true)
             {
                 Console.Clear();
 
-                World.Render(fallingStone.GetPositionX(), fallingStone.GetDynamicLayout().GetLength(1));
+                World.Render(
+                    fallingStone.GetPositionX(),
+                    fallingStone.GetDynamicLayout().GetLength(1)
+                );
 
                 fallingStone.Render();
 
@@ -28,7 +29,6 @@ namespace Tetris
                 {
                     stone.Render();
                 }
-
 
                 if (Console.KeyAvailable)
                 {
@@ -41,19 +41,49 @@ namespace Tetris
                             fallingStone.Rotate();
                             break;
 
-                        case ConsoleKey.DownArrow when (!fallingStone.IsAtBottom() && !StoneCollision.HasCollisionWithOneOfDown(fallingStone, placedStones)):
-                        case ConsoleKey.S when (!fallingStone.IsAtBottom() && !StoneCollision.HasCollisionWithOneOfDown(fallingStone, placedStones)):
-                            fallingStone.MoveDown();             
+                        case ConsoleKey.DownArrow
+                            when (
+                                !fallingStone.IsAtBottom()
+                                && !StoneCollision.HasCollisionWithOneOfDown(
+                                    fallingStone,
+                                    placedStones
+                                )
+                            ):
+                        case ConsoleKey.S
+                            when (
+                                !fallingStone.IsAtBottom()
+                                && !StoneCollision.HasCollisionWithOneOfDown(
+                                    fallingStone,
+                                    placedStones
+                                )
+                            ):
+                            fallingStone.MoveDown();
                             break;
 
-                        case ConsoleKey.RightArrow when !StoneCollision.HasCollisionWithOneOfRight(fallingStone, placedStones):
-                        case ConsoleKey.D when !StoneCollision.HasCollisionWithOneOfRight(fallingStone, placedStones):
+                        case ConsoleKey.RightArrow
+                            when !StoneCollision.HasCollisionWithOneOfRight(
+                                fallingStone,
+                                placedStones
+                            ):
+                        case ConsoleKey.D
+                            when !StoneCollision.HasCollisionWithOneOfRight(
+                                fallingStone,
+                                placedStones
+                            ):
 
                             fallingStone.MoveRight();
                             break;
 
-                        case ConsoleKey.LeftArrow when !StoneCollision.HasCollisionWithOneOfLeft(fallingStone, placedStones):
-                        case ConsoleKey.A when !StoneCollision.HasCollisionWithOneOfLeft(fallingStone, placedStones):
+                        case ConsoleKey.LeftArrow
+                            when !StoneCollision.HasCollisionWithOneOfLeft(
+                                fallingStone,
+                                placedStones
+                            ):
+                        case ConsoleKey.A
+                            when !StoneCollision.HasCollisionWithOneOfLeft(
+                                fallingStone,
+                                placedStones
+                            ):
 
                             fallingStone.MoveLeft();
                             break;
@@ -62,7 +92,10 @@ namespace Tetris
                     }
                 }
 
-                if (fallingStone.IsAtBottom() || StoneCollision.HasCollisionWithOneOfDown(fallingStone, placedStones))
+                if (
+                    fallingStone.IsAtBottom()
+                    || StoneCollision.HasCollisionWithOneOfDown(fallingStone, placedStones)
+                )
                 {
                     // Game Over
                     if (fallingStone.GetPositionY() == 1)
@@ -73,7 +106,6 @@ namespace Tetris
 
                     placedStones.Add(fallingStone);
                     fallingStone = World.SpawnStone();
-
                 }
                 else
                 {
@@ -85,7 +117,6 @@ namespace Tetris
                 {
                     // Increase points for successful row complishement.
                     World.IncreasePoints(500);
-
 
                     foreach (Stone stone in placedStones)
                     {
@@ -102,12 +133,11 @@ namespace Tetris
                                 int index = coord.Y - positionY;
 
                                 stone.ExcludeRow(index);
-                                
                             }
                         }
 
                         /*
-                         * 
+                         *
                          * Re aligns all stones on top (We move them down 1 row)
                          */
                         bool needsReplacement = false;
@@ -124,14 +154,12 @@ namespace Tetris
                         {
                             stone.MoveDown();
                         }
-
                     }
                 }
 
                 Thread.Sleep(100);
             }
         }
-
 
         public static void WriteLineAtPosition(string text, int left, int top)
         {
@@ -142,7 +170,7 @@ namespace Tetris
         /**
          * Scans the whole world and checks if theres a row full of blocks.
          * Returns an integer for the row that was found.
-         * 
+         *
          * Returns -1 if no full row was found
          */
         private static int CheckForFullRow(List<Stone> stones)
@@ -162,7 +190,7 @@ namespace Tetris
                 {
                     bool isTileSet = false;
 
-                    foreach(Stone stone in stones)
+                    foreach (Stone stone in stones)
                     {
                         if (stone.HasTileAtPosition(new Vector2(x, y)))
                         {
@@ -171,13 +199,11 @@ namespace Tetris
                         }
                     }
 
-
                     if (!isTileSet)
                     {
                         isFullRow = false;
                         break;
                     }
-
                 }
                 if (isFullRow)
                 {

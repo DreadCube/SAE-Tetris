@@ -6,24 +6,23 @@ namespace Tetris.Objects
      * The Stone Class represents a single stone
      * The logic of every Stone type is the same and
      * will be handled here.
-     * 
+     *
      * Every Block Type extends from the Stone Class.
      * A Block Type holds only two things:
-     * 
+     *
      * 1. A Color that represents the Block
      * 2. The actual layout of the Block Type.
-     * 
-     */ 
+     *
+     */
     public class Stone
     {
         /**
-         * Position of the Stone. 
-         * 
+         * Position of the Stone.
+         *
          * The Position is always
          * top / left of the Stone.
          */
         public Vector2 Position = new Vector2(0, 0);
-
 
         /**
          * Every Stone can be rotated and so we have
@@ -45,40 +44,39 @@ namespace Tetris.Objects
 
         private Direction currentDirection = Direction.Bottom;
 
-
         /**
          * excludedRows is a list of row indexes of the stone.
-         * 
+         *
          * Every time we fullfill a row in the world,
          * the destroyed row index of the stone will be adedd
          * to excludedRows. We need that information to Render
          * the destroyed stone correctly (and still do math / collisions correctly).
          * An example:
-         * 
+         *
          * x = World bounds
          * o = stone tile of IBlock
          * l = stone tile of LBlock
-         * 
-         * 
+         *
+         *
          * xxxxxxxxx
          * x       x
          * x      lx
          * xoooolllx
          * xxxxxxxxx
-         * 
-         * 
+         *
+         *
          * We fullfilled a row in the world. So We render now
          * following:
-         * 
+         *
          * xxxxxxxxx
          * x       x
          * x       x
          * x      lx
          * xxxxxxxxx
-         * 
+         *
          * The IBlock has following exluded Rows ({ 0 })
          * The LBlock has following exluded Rows ({ 1 })
-         * 
+         *
          */
         private List<int> excludedRows = new List<int>();
 
@@ -90,8 +88,8 @@ namespace Tetris.Objects
             if (currentDirection == Direction.Left)
             {
                 currentDirection = Direction.Top;
-               
-            } else
+            }
+            else
             {
                 currentDirection += 1;
             }
@@ -102,16 +100,16 @@ namespace Tetris.Objects
              * It's possible that a Block after rotation can clip out on the right side of
              * the World. Because our anchor of the Block is always top left.
              * After a rotation the width of our Block can change in size.
-             * 
+             *
              * So we gonna move back our Block as long we have cooordinates that
              * would clipping out of the world width.
-             * 
+             *
              * For the left side theres no reassigning currently needed
              * because the world bounds on the left side is at x position 0.
              * Would needed if we padding the left word bounds more to center
              * of console or similar.
              */
-            while(GetCoords().FindAll(coord => coord.X + 1 >= worldX).Count > 0)
+            while (GetCoords().FindAll(coord => coord.X + 1 >= worldX).Count > 0)
             {
                 Position.X -= 1;
             }
@@ -126,7 +124,6 @@ namespace Tetris.Objects
         {
             return Position.Y;
         }
-
 
         /**
          * Checks if the current stone has a sub tile at requested Vector Position
@@ -154,7 +151,10 @@ namespace Tetris.Objects
         protected virtual byte[,] GetLayout(Direction direction)
         {
             Console.WriteLine("GetLayout: Needs implementation of specific stone");
-            return new byte[,] { { } };
+            return new byte[,]
+            {
+                { }
+            };
         }
 
         /**
@@ -181,9 +181,8 @@ namespace Tetris.Objects
             return coords;
         }
 
-
         /**
-         * Works similar as GetLayout. Constructs a 2 dimensional array 
+         * Works similar as GetLayout. Constructs a 2 dimensional array
          * of the stones structure
          * but takes destroyed rows of a stone into account.
          */
@@ -214,13 +213,12 @@ namespace Tetris.Objects
                 }
             }
 
-
             return dynamicLayout;
         }
 
         /*
          * Moves the whole stone one position to the Left.
-         * 
+         *
          * Used for controlling the falling stone.
          */
         public void MoveLeft()
@@ -234,7 +232,7 @@ namespace Tetris.Objects
 
         /*
          * Moves the whole stone one position to the right.
-         * 
+         *
          * Used for controlling the falling stone.
          */
         public void MoveRight()
@@ -301,7 +299,7 @@ namespace Tetris.Objects
             {
                 for (int x = 0; x < layoutArr.GetLength(1); x++)
                 {
-                    if (layoutArr[y,x] == 1)
+                    if (layoutArr[y, x] == 1)
                     {
                         Program.WriteLineAtPosition("█", Position.X + x, Position.Y + y);
                     }
@@ -312,4 +310,3 @@ namespace Tetris.Objects
         }
     }
 }
-
